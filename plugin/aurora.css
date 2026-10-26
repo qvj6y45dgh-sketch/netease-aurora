@@ -55,6 +55,7 @@
   inset: 0 !important; margin: 0 !important; border-radius: 18px !important;
   background: transparent !important; transform: none !important; animation: none !important;
 }
+[data-aurora-page] [data-testid='tid_vinylcover_container'] > .handle,
 [data-aurora-page] .cover-container-new > canvas,
 [data-aurora-page] .cover-container-new > [class^='SoundEffectAnimation'] { display: none !important; }
 [data-aurora-page] [data-testid='tid_vinylcover_cover'] {
