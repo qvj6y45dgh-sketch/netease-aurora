@@ -87,17 +87,17 @@
 }
 [data-aurora-page] .info-line {
   margin-top: 10px !important; opacity: .65; display: flex !important; min-width: 0; gap: 0 !important;
-  font-size: 0 !important; white-space: nowrap;
+  --aurora-info-size: 14px; font-size: 0 !important; white-space: nowrap;
 }
 /* Show "artist · album" on one line: drop the 来源 item and the 专辑/歌手 labels. */
 [data-aurora-page] .info-line .info {
   width: auto !important; max-width: none !important; margin: 0 !important; padding: 0 !important;
   flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis;
 }
-[data-aurora-page] .info-line .info > span { font-size: 14px; }
+[data-aurora-page] .info-line .info > span { font-size: var(--aurora-info-size); }
 [data-aurora-page] .info-line .artist { order: 1; flex-shrink: 0; max-width: 55% !important; }
 [data-aurora-page] .info-line .album { order: 2; }
-[data-aurora-page] .info-line .album::before { content: '·'; font-size: 14px; margin: 0 .5em; }
+[data-aurora-page] .info-line .album::before { content: '·'; font-size: var(--aurora-info-size); margin: 0 .5em; }
 [data-aurora-page] .info-line .src { display: none !important; }
 [data-aurora-page] [class^='TrackDisplayContainer'] { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 [data-aurora-page] .tab-group { background: #ffffff0a !important; border: 1px solid #ffffff0b; margin-bottom: 10px !important; }
@@ -143,16 +143,13 @@
   -webkit-mask-image: linear-gradient(transparent, #000 56px, #000 calc(100% - 48px), transparent);
 }
 /* Depth: AMLL's own 2–5px per-line blur is too heavy at this size, so grade it by
-   distance from the active line here instead (wrappers are siblings in lyric order). */
+   distance from the active line instead; aurora.js sets data-aurora-depth in lyric order. */
 .aurora-lyrics-host .FmKaba_lyricLineWrapper {
   padding-block: .28em; filter: blur(1.6px) !important; border-radius: .4em !important;
 }
-.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(> .FmKaba_active) + .FmKaba_lyricLineWrapper + .FmKaba_lyricLineWrapper,
-.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(+ .FmKaba_lyricLineWrapper + .FmKaba_lyricLineWrapper > .FmKaba_active) { filter: blur(.9px) !important; }
-.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(> .FmKaba_active) + .FmKaba_lyricLineWrapper,
-.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(+ .FmKaba_lyricLineWrapper > .FmKaba_active) { filter: blur(.4px) !important; }
-.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(+ .FmKaba_lyricLineWrapper > .FmKaba_active) .FmKaba_lyricLine:not(.FmKaba_active),
-.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(> .FmKaba_active) + .FmKaba_lyricLineWrapper .FmKaba_lyricLine:not(.FmKaba_active) {
+.aurora-lyrics-host .FmKaba_lyricLineWrapper[data-aurora-depth='2'] { filter: blur(.9px) !important; }
+.aurora-lyrics-host .FmKaba_lyricLineWrapper[data-aurora-depth='1'] { filter: blur(.4px) !important; }
+.aurora-lyrics-host .FmKaba_lyricLineWrapper[data-aurora-depth='1'] .FmKaba_lyricLine:not(.FmKaba_active) {
   --bright-mask-alpha: .3; --dark-mask-alpha: .3;
 }
 /* Inactive lines carry a light tint of the cover's hue; the active line stays white. */
@@ -168,15 +165,17 @@
 .aurora-lyrics-host .amll-lyric-player:hover .FmKaba_lyricLineWrapper:not(:has(> .FmKaba_active)) { filter: none !important; }
 .aurora-lyrics-host .FmKaba_lyricSubLine { opacity: .4; }
 .aurora-lyrics-host .FmKaba_lyricLineWrapper:has(.FmKaba_active) .FmKaba_lyricSubLine { opacity: .78; }
-/* Hide the song pill that doubles as the comments pull-up handle; comments stay reachable from the playbar. */
-[data-aurora-page] [class^='CommentTabContainer'] > [class^='TrackInfoContainer'] { visibility: hidden !important; pointer-events: none !important; }
+/* Hide the song pill that doubles as the comments pull-up handle while comments are closed;
+   the client opens them by translating ClassicPageContainer up, which brings the header back. */
+[data-aurora-page] [class^='ClassicPageContainer']:not([style*='translateY(-']) > [class^='CommentTabContainer'] > [class^='TrackInfoContainer'] { visibility: hidden !important; pointer-events: none !important; }
 [data-aurora-page] > .page-footer {
   background: #14141b66 !important; backdrop-filter: blur(24px); border-top: 1px solid #ffffff0b;
   transition: opacity .25s ease, translate .25s ease;
 }
 /* The client mounts the playbar on any mouse move; keep it invisible until the pointer is
-   over the bar itself, or while one of its popups or keyboard focus is active. */
-[data-aurora-page] > .page-footer:not(:hover):not(:has(:focus-visible, [aria-expanded='true'])) { opacity: 0; translate: 0 10px; }
+   over the bar itself, or while one of its popups or keyboard focus is active. Hover popovers
+   such as volume are portaled to <body> as .cmd-portal .vinyl-bar. */
+body:not(:has(> .cmd-portal .vinyl-bar)) [data-aurora-page] > .page-footer:not(:hover):not(:has(:focus-visible, [aria-expanded='true'])) { opacity: 0; translate: 0 10px; }
 [data-aurora-page] .page-footer button { transition: background .2s, scale .2s; }
 [data-aurora-page] .page-footer button:hover { background: #ffffff18 !important; scale: 1.04; }
 [data-aurora-page] .page-footer [data-testid='tid_playbar_play_btn'] { background: #ffffff18 !important; border: 1px solid #ffffff15; }
@@ -191,7 +190,7 @@
 @keyframes aurora-drift { from { translate: -3% -2%; rotate: -8deg; scale: 1; } to { translate: 5% 3%; rotate: 8deg; scale: 1.12; } }
 @media (max-width: 850px) {
   [data-aurora-page] [class^='VinylPageLayoutContainer'] { gap: 32px; padding: 72px 5vw 16px !important; }
-  [data-aurora-page] .info-line { font-size: 12px; }
+  [data-aurora-page] .info-line { --aurora-info-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
   [data-aurora-page] *, [data-aurora-page] *::before, [data-aurora-page] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }

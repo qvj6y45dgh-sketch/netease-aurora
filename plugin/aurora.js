@@ -167,8 +167,24 @@
       if(!pendingSeek&&isPlaying)time=Math.max(lastTime,time);
       player.setCurrentTime(time,pendingSeek);pendingSeek=false;lastTime=time;
       player.update(Math.min(gap,50));lastFrame=now;frames++;
+      if(now-lastDepth>=120){lastDepth=now;updateDepth();}
     }catch(e){error='Lyric frame: '+e.message;restoreOriginal();host.hidden=true;return;}
     ensureFrame();
+  }
+  // Tag each line with its distance from the active line for the CSS depth blur. AMLL may
+  // create wrappers out of order, so order them by their laid-out translateY, not DOM order.
+  let lastDepth=0;
+  function updateDepth() {
+    const wrappers=[...player.getElement().children]
+      .filter(el=>el.classList.contains('FmKaba_lyricLineWrapper')&&!el.classList.contains('FmKaba_bottomLineWrapper'))
+      .map((el,index)=>({el,y:Number(/translateY\((-?[\d.]+)px\)/.exec(el.style.transform)?.[1]??index)}))
+      .sort((a,b)=>a.y-b.y);
+    const active=[];
+    wrappers.forEach((w,i)=>{if(w.el.querySelector(':scope > .FmKaba_active'))active.push(i);});
+    wrappers.forEach((w,i)=>{
+      const depth=active.length?String(Math.min(3,...active.map(a=>Math.abs(a-i)))):'3';
+      if(w.el.dataset.auroraDepth!==depth)w.el.dataset.auroraDepth=depth;
+    });
   }
   function toggle(){enabled=!enabled;if(!enabled)disposeLyrics();sync();setPresentation();}
   function sync() {
