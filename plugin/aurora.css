@@ -1,0 +1,198 @@
+[data-aurora-page] {
+  --aurora-text: #fff8f3;
+  background: #17171c !important;
+  isolation: isolate;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+}
+[data-aurora-page] #VINYL_COVER_ELEMENT_ID {
+  background: #17171c !important;
+  isolation: isolate;
+}
+[data-aurora-page] #VINYL_COVER_ELEMENT_ID > .mask { opacity: 0 !important; }
+.aurora-atmosphere { display: none; }
+[data-aurora-page] .aurora-atmosphere {
+  display: block; position: absolute; inset: 0; overflow: hidden;
+  pointer-events: none; z-index: -1; background: #17171c;
+}
+[data-aurora-page] .aurora-atmosphere::before,
+[data-aurora-page] .aurora-atmosphere::after {
+  content: ''; position: absolute; inset: -24%;
+  background-image: var(--aurora-art); background-size: cover; background-position: center;
+  filter: blur(70px) saturate(1.55); opacity: .55;
+  animation: aurora-drift 26s ease-in-out infinite alternate;
+}
+[data-aurora-page] .aurora-atmosphere::after {
+  opacity: .27; transform: rotate(160deg) scale(1.15);
+  animation-direction: alternate-reverse; animation-duration: 32s;
+}
+[data-aurora-page] .aurora-veil {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(110deg, #12121b20, #15151c55 56%, #11111888), linear-gradient(0deg, #101017c9, transparent 70%);
+}
+[data-aurora-page] [class^='ClassicPageContainer'] { position: relative; }
+[data-aurora-page] [class^='VinylPageLayoutContainer'] {
+  display: grid !important; grid-template-columns: minmax(0, 1fr) minmax(0, 1.13fr);
+  gap: clamp(32px, 5.5vw, 110px); padding: 76px 8vw 16px !important;
+  height: calc(100vh - 90px) !important; box-sizing: border-box; align-items: center;
+}
+[data-aurora-page] [class^='VinylPageLayoutContainer'] > .side,
+[data-aurora-page] [class^='VinylPageLayoutContainer'] > .center { display: none !important; }
+[data-aurora-page] [class^='VinylPageLayoutContainer'] > .vinyl,
+[data-aurora-page] [class^='VinylPageLayoutContainer'] > .display {
+  width: 100% !important; min-width: 0 !important; height: 100% !important;
+}
+[data-aurora-page] .cover-area {
+  width: 100% !important; height: 100% !important; margin: 0 !important;
+  display: flex !important; align-items: center; justify-content: center;
+}
+[data-aurora-page] [data-testid='tid_vinylcover_container'] {
+  width: 100% !important; height: auto !important; aspect-ratio: 1;
+  max-width: 440px; margin: 0 !important; position: relative !important; top: 0 !important;
+}
+[data-aurora-page] .cover-container-new,
+[data-aurora-page] .cover-container-rotate {
+  width: 100% !important; height: 100% !important; position: absolute !important;
+  inset: 0 !important; margin: 0 !important; border-radius: 18px !important;
+  background: transparent !important; transform: none !important; animation: none !important;
+}
+[data-aurora-page] .cover-container-new > canvas,
+[data-aurora-page] .cover-container-new > [class^='SoundEffectAnimation'] { display: none !important; }
+[data-aurora-page] [data-testid='tid_vinylcover_cover'] {
+  width: 100% !important; height: 100% !important; inset: 0 !important;
+  position: absolute !important; transform: none !important; border-radius: 18px !important;
+  visibility: visible !important;
+  box-shadow: 0 28px 70px #0007, 0 2px 8px #0003;
+  transition: box-shadow .5s, scale .5s;
+}
+[data-aurora-page] [data-testid='tid_vinylcover_cover']:hover { scale: 1.015; box-shadow: 0 36px 80px #0008; }
+[data-aurora-page] [data-testid='tid_vinylcover_cover'] img {
+  width: 100% !important; height: 100% !important; display: block;
+  border-radius: 18px !important; object-fit: cover; visibility: visible !important;
+}
+/* The native image is a 128px thumbnail; overlay the full-size art when it loads. */
+[data-aurora-page] [data-testid='tid_vinylcover_cover']::after {
+  content: ''; position: absolute; inset: 0; border-radius: 18px; pointer-events: none;
+  background: var(--aurora-cover, none) center / cover no-repeat;
+}
+[data-aurora-page] [class^='VinylPageLayoutContainer'] > .display {
+  display: flex !important; flex-direction: column; padding: 0 !important;
+  gap: 10px !important; align-self: stretch !important;
+}
+[data-aurora-page] [data-testid='tid_tracktitle_container'] { flex: 0 0 auto; margin: 0 0 8px !important; }
+[data-aurora-page] [data-testid='tid_tracktitle_container'] .title {
+  font-size: clamp(23px, 2.7vw, 38px) !important; font-weight: 700 !important;
+  letter-spacing: -.7px; color: var(--aurora-text) !important; line-height: 1.25 !important;
+  white-space: normal !important; display: -webkit-box !important;
+  -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+[data-aurora-page] .info-line {
+  margin-top: 10px !important; opacity: .65; display: flex !important; min-width: 0; gap: 0 !important;
+  font-size: 0 !important; white-space: nowrap;
+}
+/* Show "artist · album" on one line: drop the 来源 item and the 专辑/歌手 labels. */
+[data-aurora-page] .info-line .info {
+  width: auto !important; max-width: none !important; margin: 0 !important; padding: 0 !important;
+  flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis;
+}
+[data-aurora-page] .info-line .info > span { font-size: 14px; }
+[data-aurora-page] .info-line .artist { order: 1; flex-shrink: 0; max-width: 55% !important; }
+[data-aurora-page] .info-line .album { order: 2; }
+[data-aurora-page] .info-line .album::before { content: '·'; font-size: 14px; margin: 0 .5em; }
+[data-aurora-page] .info-line .src { display: none !important; }
+[data-aurora-page] [class^='TrackDisplayContainer'] { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+[data-aurora-page] .tab-group { background: #ffffff0a !important; border: 1px solid #ffffff0b; margin-bottom: 10px !important; }
+[data-aurora-page] .tab-group .tab { font-size: 12px !important; }
+[data-aurora-page] .tab-group .active { background: #ffffff15 !important; }
+[data-aurora-page] .area { flex: 1; min-height: 0; height: auto !important; }
+[data-aurora-page] [class^='LyricDisplayInnerContainer'] { height: 100% !important; }
+[data-aurora-page] [data-testid='tid_lyricdisplay_list'] {
+  height: 100% !important; scroll-behavior: smooth;
+  -webkit-mask-image: linear-gradient(transparent, #000 16px, #000 calc(100% - 24px), transparent) !important;
+}
+[data-aurora-page] .lyric .line {
+  margin: 12px 0 !important; padding: 0 12px 0 2px;
+  opacity: .48 !important; filter: blur(.45px); transform-origin: left center;
+  scale: .98;
+  transition: opacity .65s, filter .65s, scale .65s cubic-bezier(.22,1,.36,1);
+}
+[data-aurora-page] .lyric .line[data-aurora-distance='1'] { opacity: .72 !important; filter: none; }
+[data-aurora-page] .lyric .line[data-aurora-distance='2'] { opacity: .60 !important; filter: blur(.15px); }
+[data-aurora-page] .lyric .line[data-aurora-distance='3'] { opacity: .51 !important; filter: blur(.3px); }
+[data-aurora-page] .lyric .line p { color: var(--aurora-text) !important; font-weight: 650 !important; }
+[data-aurora-page] .lyric .line p:first-child { font-size: clamp(25px, 2.6vw, 34px) !important; line-height: 1.35 !important; }
+[data-aurora-page] .lyric .line p + p { font-size: 12px !important; opacity: .72; margin-top: 3px; line-height: 1.4 !important; }
+[data-aurora-page] .lyric .line p:empty { display: none; }
+[data-aurora-page] .lyric .line.active,
+[data-aurora-page] .lyric .line.current,
+[data-aurora-page] .lyric .line.playing,
+[data-aurora-page] .lyric .line:hover { opacity: 1 !important; filter: none; scale: 1.035; }
+[data-aurora-page] [data-aurora-native-hidden] { visibility: hidden !important; pointer-events: none !important; }
+.aurora-lyrics-host { position: absolute; inset: 0 36px 0 0; z-index: 2; }
+[data-aurora-page] [class^='LyricOperatorContainer'] { z-index: 3; }
+.aurora-lyrics-host[hidden] { display: block !important; visibility: hidden !important; pointer-events: none !important; }
+.aurora-lyrics-host .amll-lyric-player {
+  --amll-lp-font-size: clamp(25px, 2.6vw, 34px);
+  --amll-lp-line-width-aspect: 1;
+  --amll-lp-line-padding-x: .18em;
+  --amll-lp-color: #fff8f3;
+  --amll-lp-hover-bg-color: #ffffff0d;
+  /* Lyric text sits a half-em inside the title's left edge. */
+  --lyric-line-padding-x: .5em;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+  font-weight: 750; letter-spacing: -.012em; mix-blend-mode: normal;
+  -webkit-mask-image: linear-gradient(transparent, #000 56px, #000 calc(100% - 48px), transparent);
+}
+/* Depth: AMLL's own 2–5px per-line blur is too heavy at this size, so grade it by
+   distance from the active line here instead (wrappers are siblings in lyric order). */
+.aurora-lyrics-host .FmKaba_lyricLineWrapper {
+  padding-block: .28em; filter: blur(1.6px) !important; border-radius: .4em !important;
+}
+.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(> .FmKaba_active) + .FmKaba_lyricLineWrapper + .FmKaba_lyricLineWrapper,
+.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(+ .FmKaba_lyricLineWrapper + .FmKaba_lyricLineWrapper > .FmKaba_active) { filter: blur(.9px) !important; }
+.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(> .FmKaba_active) + .FmKaba_lyricLineWrapper,
+.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(+ .FmKaba_lyricLineWrapper > .FmKaba_active) { filter: blur(.4px) !important; }
+.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(+ .FmKaba_lyricLineWrapper > .FmKaba_active) .FmKaba_lyricLine:not(.FmKaba_active),
+.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(> .FmKaba_active) + .FmKaba_lyricLineWrapper .FmKaba_lyricLine:not(.FmKaba_active) {
+  --bright-mask-alpha: .3; --dark-mask-alpha: .3;
+}
+/* Inactive lines carry a light tint of the cover's hue; the active line stays white. */
+.aurora-lyrics-host .FmKaba_lyricLineWrapper { color: var(--aurora-tint, inherit); transition: opacity .4s, filter .4s, background-color .25s, color .6s; }
+.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(> .FmKaba_active),
+.aurora-lyrics-host .FmKaba_bottomLineWrapper { color: inherit; }
+/* Active line: full strength, unsung words a touch brighter, soft glow on the lit text. */
+.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(> .FmKaba_active) {
+  opacity: 1 !important; filter: drop-shadow(0 0 .3em #ffffff38) !important;
+}
+.aurora-lyrics-host .FmKaba_lyricLine.FmKaba_active.FmKaba_gradientMask { --dark-mask-alpha: .45; }
+.aurora-lyrics-host .FmKaba_bottomLineWrapper { filter: none !important; }
+.aurora-lyrics-host .amll-lyric-player:hover .FmKaba_lyricLineWrapper:not(:has(> .FmKaba_active)) { filter: none !important; }
+.aurora-lyrics-host .FmKaba_lyricSubLine { opacity: .4; }
+.aurora-lyrics-host .FmKaba_lyricLineWrapper:has(.FmKaba_active) .FmKaba_lyricSubLine { opacity: .78; }
+/* Hide the song pill that doubles as the comments pull-up handle; comments stay reachable from the playbar. */
+[data-aurora-page] [class^='CommentTabContainer'] > [class^='TrackInfoContainer'] { visibility: hidden !important; pointer-events: none !important; }
+[data-aurora-page] > .page-footer {
+  background: #14141b66 !important; backdrop-filter: blur(24px); border-top: 1px solid #ffffff0b;
+  transition: opacity .25s ease, translate .25s ease;
+}
+/* The client mounts the playbar on any mouse move; keep it invisible until the pointer is
+   over the bar itself, or while one of its popups or keyboard focus is active. */
+[data-aurora-page] > .page-footer:not(:hover):not(:has(:focus-visible, [aria-expanded='true'])) { opacity: 0; translate: 0 10px; }
+[data-aurora-page] .page-footer button { transition: background .2s, scale .2s; }
+[data-aurora-page] .page-footer button:hover { background: #ffffff18 !important; scale: 1.04; }
+[data-aurora-page] .page-footer [data-testid='tid_playbar_play_btn'] { background: #ffffff18 !important; border: 1px solid #ffffff15; }
+.aurora-switch {
+  position: absolute; top: 34px; left: 114px; z-index: 10;
+  border: 1px solid #ffffff20; border-radius: 30px; background: #ffffff08;
+  color: #fff9; font: 500 11px -apple-system, sans-serif; letter-spacing: 1.8px;
+  padding: 7px 12px; cursor: pointer; -webkit-app-region: no-drag;
+}
+.aurora-switch[aria-pressed='true'] { color: #fffffff0; background: #ffffff13; }
+.aurora-switch:hover { background: #ffffff25; }
+@keyframes aurora-drift { from { translate: -3% -2%; rotate: -8deg; scale: 1; } to { translate: 5% 3%; rotate: 8deg; scale: 1.12; } }
+@media (max-width: 850px) {
+  [data-aurora-page] [class^='VinylPageLayoutContainer'] { gap: 32px; padding: 72px 5vw 16px !important; }
+  [data-aurora-page] .info-line { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-aurora-page] *, [data-aurora-page] *::before, [data-aurora-page] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

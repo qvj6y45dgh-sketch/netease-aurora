@@ -1,0 +1,28 @@
+{
+  "name": "netease-aurora-internal",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "probe": "node scripts/plugin.mjs probe",
+    "status": "node scripts/plugin.mjs status",
+    "enable": "node scripts/plugin.mjs enable",
+    "disable": "node scripts/plugin.mjs disable",
+    "build": "node scripts/build.mjs",
+    "test": "node --test scripts/lyrics.test.mjs"
+  },
+  "dependencies": {
+    "@applemusic-like-lyrics/core": "0.6.0",
+    "@pixi/app": "7.4.3",
+    "@pixi/core": "7.4.3",
+    "@pixi/display": "7.4.3",
+    "@pixi/filter-blur": "7.4.3",
+    "@pixi/filter-bulge-pinch": "5.1.1",
+    "@pixi/filter-color-matrix": "7.4.3",
+    "@pixi/sprite": "7.4.3",
+    "esbuild": "0.25.12"
+  }
+}

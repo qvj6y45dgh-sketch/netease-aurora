@@ -1,0 +1,13 @@
+Bundled license information:
+
+punycode/punycode.js:
+  /*! https://mths.be/punycode v1.4.1 by @mathias */
+
+@pixi/filter-bulge-pinch/dist/filter-bulge-pinch.mjs:
+  /*!
+   * @pixi/filter-bulge-pinch - v5.1.1
+   * Compiled Wed, 11 Jan 2023 23:10:33 UTC
+   *
+   * @pixi/filter-bulge-pinch is licensed under the MIT License.
+   * http://www.opensource.org/licenses/mit-license
+   */
