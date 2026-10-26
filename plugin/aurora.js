@@ -257,7 +257,7 @@
   reduceMotion.addEventListener('change',motionPreferenceChanged);
   window.__aurora={toggle,status(){
     const gaps=[...frameGaps].sort((a,b)=>a-b);
-    return {version:'0.3.0',enabled,loading:!native&&nativeAttempts<=40,nativeReady:!!native,pageFound:!!page,styled:!!page?.hasAttribute('data-aurora-page'),artLoaded:!!art,
+    return {version:'0.3.6',enabled,loading:!native&&nativeAttempts<=40,nativeReady:!!native,pageFound:!!page,styled:!!page?.hasAttribute('data-aurora-page'),artLoaded:!!art,
       lyrics:{renderer:player?'AMLL DOM 0.6.0':'native',maskEngine:CSS.supports('mask-image','none')?'web-animations':'webkit-calc',mode,lines:lyricLines.length,words:wordCount,playing:isPlaying,timeMs:Math.round(currentTime()),nativeSamples:progressSamples,frames,seeks:seekCount,reducedMotion:reduceMotion.matches,medianFrameMs:gaps[Math.floor(gaps.length*.5)]||null,p95FrameMs:gaps[Math.floor(gaps.length*.95)]||null},error:error||null,url:location.href};
   },destroy(){
     destroyed=true;observer.disconnect();clearTimeout(scheduled);unsubscribeStore?.();subscriptions.forEach(s=>s.unsubscribe());subscriptions=[];
